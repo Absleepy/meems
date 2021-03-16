@@ -2,3 +2,22 @@
   max-height: 438px;
   object-fit: contain;
 }
+.sug-meens-cont{
+  width: 100%;
+  overflow: hidden;
+  overflow-x: auto;
+}
+.sug-box{ 
+  overflow: hidden;
+  min-width:100px;
+  height:100px;
+  display: flex;
+  align-items: center;
+  margin: 12px;
+  cursor: pointer;
+  transition: all .4s ease;
+  box-shadow: 0 0 12px #ddd;
+}
+.sug-box:hover{
+  transform: scale(1.1);
+}

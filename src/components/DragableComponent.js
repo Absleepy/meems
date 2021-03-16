@@ -12,7 +12,7 @@ import { useDrag } from 'react-dnd'
   }))
     return (
         <div ref={dragPreview} style={{ background: isDragging ? 'red' : '#fff'}}> 
-            <div role="Handle" ref={drag}>tester</div>
+            <div role="Handle" ref={drag}><h2 className="px-3">{text}</h2></div>
         </div>
     )
 }
