@@ -8,18 +8,17 @@ export const Container = ({ img, text, moreTitle }) => {
   const [boxes, setBoxes] = useState({});
   React.useEffect(() => {
     const obj = {};
-    moreTitle?.map((more, i) => ( 
-     
-      obj[i] = {  
-        top: 23,
-        left: 23,
-        title: more.title,
-      }
-      )); 
+    moreTitle?.map(
+      (more, i) =>
+        (obj[i] = {
+          left: 43,
+          top: 23,
+          title: more.title,
+        })
+    );
     setBoxes(obj);
   }, [moreTitle]);
 
- 
   const moveBox = useCallback(
     (id, left, top) => {
       setBoxes(

@@ -12,9 +12,8 @@ const Memes = () => {
   const [loading, setLoading] = useState(true);
   const [moreTitle, setMoreTitle] = useState([]);
   const [sidebarStatus, setSidebarStatus] = useState(false);
-  const [sideData, setSideData] = useState([])
-  const [error, setError] = useState(false)
-
+  const [sideData, setSideData] = useState([]);
+  const [error, setError] = useState(false);
 
   const url = "https://api.imgflip.com/get_memes";
 
@@ -40,7 +39,7 @@ const Memes = () => {
     fetchData();
   }, []);
 
-  // plus button 
+  // plus button
   const handleClick = (obj) => {
     setRandomObj(obj);
   };
@@ -52,30 +51,32 @@ const Memes = () => {
       name: e.target.value,
     });
   };
-// meem titls
+  // meem titls
   const handleAddTitle = () => {
     setError(false);
-    setSideData(moreTitle)
-    setMoreTitle([...moreTitle, { title: randomObj?.name }]);
+    setSideData(moreTitle);
+    setMoreTitle([
+      ...moreTitle,
+      {
+        left: 54,
+        top: 34,
+        fontSize: 12,
+        color: "#ffffff",
+        title: randomObj?.name,
+      },
+    ]);
   };
 
   // sidebar
-  const showSidebar = () =>{ 
+  const showSidebar = () => {
     setSideData(moreTitle);
-    return(
-      moreTitle.length === 0 ? (
-        setError(true)
-      ) : (
-        setError(false),
-        setSidebarStatus(!sidebarStatus,
-          ))
-    )
-   
-  }
-  const closeSidebar = () =>{
-    setSidebarStatus(!sidebarStatus)
-  }
-
+    return moreTitle.length === 0
+      ? setError(true)
+      : (setError(false), setSidebarStatus(!sidebarStatus));
+  };
+  const closeSidebar = () => {
+    setSidebarStatus(!sidebarStatus);
+  };
 
   return (
     <div className="container-fluid">
@@ -116,12 +117,27 @@ const Memes = () => {
                 </div>
               ))}
             </div>
-          </div> 
-          <div className="btn-container my-3 ">
-          <button onClick={showSidebar} className="d-block btn myBtn text-white">Edit</button>
-          {error ? <div className="text-right"><span className="text-danger">Please add title </span></div> : null}
           </div>
-          <div className="text-align-right"><Sidebar sideData={sideData} closeSidebar={closeSidebar} showSidebar={sidebarStatus}/></div>
+          <div className="btn-container my-3 ">
+            <button
+              onClick={showSidebar}
+              className="d-block btn myBtn text-white"
+            >
+              Edit
+            </button>
+            {error ? (
+              <div className="text-right">
+                <span className="text-danger">Please add title </span>
+              </div>
+            ) : null}
+          </div>
+          <div className="text-align-right">
+            <Sidebar
+              sideData={sideData}
+              closeSidebar={closeSidebar}
+              showSidebar={sidebarStatus}
+            />
+          </div>
           {memes.length > 0 && (
             <div className="meme-setting">
               <MemeSetting

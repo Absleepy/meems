@@ -15,10 +15,13 @@ const Sidebar = ({ showSidebar, sideData, closeSidebar }) => {
     setData(sideData);
   }, [sideData]);
   const handleColor = (e, idx) => {
-    setTitleStyle({
-      ...titleStyle,
-      color: e.target.value,
-    });
+    setData([
+      ...data,
+      {
+        ...sideData,
+        color: e.target.value,
+      },
+    ]);
   };
   const handleFontSize = (e, idx) => {
     setFontSize({
@@ -33,7 +36,7 @@ const Sidebar = ({ showSidebar, sideData, closeSidebar }) => {
   };
 
   const editTitle = (idx) => {
-    return setIndex(idx), setPopup(!popup);
+    setPopup(!popup);
   };
   return (
     <div className={`sidebar ${showSidebar ? "showSidebar" : ""}`}>
@@ -52,19 +55,19 @@ const Sidebar = ({ showSidebar, sideData, closeSidebar }) => {
           >
             <h2
               style={{
-                fontSize: `${idx === index && fontSize.size}px`,
+                fontSize: `${item?.fontSize}px`,
                 flex: 1,
-                color: `${idx === index && titleStyle.color}`,
+                color: `${item?.color}`,
               }}
             >
               {item?.title}
             </h2>
             <div className="position-relative">
               <button
-                onClick={() => editTitle(idx)}
+                onClick={() => editTitle()}
                 className="d-block btn myBtn text-white"
               >
-                {popup && idx === index ? <Close /> : "Edit"}
+                {popup ? <Close /> : "Edit"}
               </button>
               {popup && idx === index && (
                 <div className="position-absolute edit-popup">
@@ -73,7 +76,7 @@ const Sidebar = ({ showSidebar, sideData, closeSidebar }) => {
                       <input
                         id="colorPicker"
                         value={idx === index ? titleStyle.color : null}
-                        onChange={(e) => handleColor(e, idx)}
+                        onChange={(e) => handleColor(e)}
                         type="color"
                       />
                       <span>Color</span>
