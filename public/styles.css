@@ -20,3 +20,6 @@ a:focus {
 p {
   margin: 0;
 } 
+.text-right{
+  text-align: right;
+}
