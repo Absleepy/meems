@@ -7,23 +7,16 @@ const Sidebar = ({ showSidebar, sideData, closeSidebar }) => {
   const [index, setIndex] = useState(0);
   const [popup, setPopup] = useState(false);
   const [fontSize, setFontSize] = useState(12);
-  const [titleStyle, setTitleStyle] = useState({
-    color: "#ffffff",
-  });
+
+  // don't set props in local state.. change them using a function call to there parent
 
   React.useEffect(() => {
     setData(sideData);
   }, [sideData]);
-  const handleColor = (e, idx) => {
-    setData([
-      ...data,
-      {
-        ...sideData,
-        color: e.target.value,
-      },
-    ]);
+  const handleColor = (e) => {
+    console.log(e.target.value);
   };
-  const handleFontSize = (e, idx) => {
+  const handleFontSize = (e) => {
     setFontSize({
       ...fontSize,
       size: e.target.value,
@@ -35,7 +28,7 @@ const Sidebar = ({ showSidebar, sideData, closeSidebar }) => {
     title = e.target.value;
   };
 
-  const editTitle = (idx) => {
+  const editTitle = () => {
     setPopup(!popup);
   };
   return (
@@ -67,15 +60,15 @@ const Sidebar = ({ showSidebar, sideData, closeSidebar }) => {
                 onClick={() => editTitle()}
                 className="d-block btn myBtn text-white"
               >
-                {popup ? <Close /> : "Edit"}
+                {idx === idx && popup ? <Close /> : "Edit"}
               </button>
-              {popup && idx === index && (
+              {popup && (
                 <div className="position-absolute edit-popup">
                   <div className="d-flex flex-column">
                     <div className="d-flex align-items-center justify-content-evenly">
                       <input
                         id="colorPicker"
-                        value={idx === index ? titleStyle.color : null}
+                        value={idx === idx ? item?.color : null}
                         onChange={(e) => handleColor(e)}
                         type="color"
                       />
@@ -84,7 +77,7 @@ const Sidebar = ({ showSidebar, sideData, closeSidebar }) => {
                     <div className="d-flex align-items-center justify-content-evenly">
                       <input
                         id="range"
-                        value={idx === index ? fontSize.size : null}
+                        value={idx === idx ? fontSize.size : null}
                         onChange={(e) => handleFontSize(e, idx)}
                         type="range"
                         min={13}
