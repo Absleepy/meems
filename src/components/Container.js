@@ -4,15 +4,14 @@ import { useDrop } from "react-dnd";
 import { ItemsTypes } from "./ItemsTypes";
 import MemeTitle from "./MemeTitle";
 import update from "immutability-helper";
-export const Container = ({title, objects}) => { 
+export const Container = ({objects}) => { 
+  console.log(objects);
   const [boxes, setBoxes] = useState({objects});
   React.useEffect(() =>{
     const empObj = {};
     objects?.map((obj, i) =>(
       empObj[i] = {
-        top: obj?.top,
-        left: obj?.left,
-        title: obj?.title
+       ...obj
       }
     )) 
     setBoxes(empObj)
@@ -49,11 +48,11 @@ export const Container = ({title, objects}) => {
        className="h-100"
     >
       {Object.keys(boxes).map((key) => {
-        const { left, top } = boxes[key];
+        const { left, top, title,prop } = boxes[key];
         return (
           <MemeTitle key={key} id={key} left={left} top={top}>
-             <h4 key={key} className="meme_img_text">{
-               Object.values(boxes).map(ob => <span>{ob?.title}</span>)
+             <h4 style={{color: prop?.css?.font?.color, fontSize: `${prop?.css?.font?.fontSize}px`}} key={key} className="meme_img_text">{
+            title
              }</h4>
           </MemeTitle>
         );

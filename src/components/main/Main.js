@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import MemeImage from "./MemeImage";
-import Data from "./Data";
+import useData from "./useData";
 import MemeSugguestions from "../MemeSetting";
 import Button from "../button/Button";
 import Sidebar from "../sidebar/sidebar";
 const Main = () => {
-  const memes = Data();
+  const [memes, loading] = useData();
   const [randomObj, setRandomObj] = useState({});
   const [objects, setObjects] = useState([]);
   const [sidebarStatus, setSidebarStatus] = useState(false);
@@ -36,6 +36,9 @@ const Main = () => {
         top: randomNumber(10, 100),
         left: randomNumber(10, 100),
         title: randomObj?.name,
+        prop: {
+          css: { color: "#ffffff", fontSize: "18" },
+        },
       },
     ]);
   };
@@ -47,15 +50,67 @@ const Main = () => {
   const showPopup = () => {
     setPopupStatus(!popupStatus);
   };
-  const changeOb = (obj, e, i) => {
-    console.log(obj);
-  };
+
   const changeTitle = (e, i) => {
-    changeOb(objects, e, i);
+    //i => index of array need to updated
+    let { name: key, value } = e.target;
+
+    if (key.includes(".")) {
+      key = key.split(".");
+    }
+    console.log(key);
+
+    // key = "title" value="whatever user in typing"
+
+    // updating use map
+    if (typeof key === "string")
+      setObjects(
+        objects.map((obj, index) =>
+          index === i ? { ...obj, [key]: value } : obj
+        )
+      );
+    else
+      setObjects(
+        objects.map((obj, index) => {
+          if (index === i) {
+            const data = { ...obj };
+            const traverse = (data, i) => {
+              Object.keys(data).map((k) => {
+                if (k === key[i]) {
+                  if (i === key.length - 1) {
+                    data[k] = value;
+                  } else traverse(data[k], i + 1);
+                }
+              });
+            };
+            traverse(data, 0);
+
+            return { ...data };
+          } else return obj;
+        })
+      );
+
+    //test = [{title:"something 1"},{title:"something 2"},{title:"something 3"}]
+    //for example i=2
+    //updating direct
+
+    // test[i] = {title:"something new"}
+    //const key = "title"
+    // console.log(test[i][key])
+
+    // let newObjects = [...objects];
+    // newObjects[i] = { ...newObjects[i], [key]: value };
+    // setObjects(newObjects);
   };
 
+  console.log(objects);
   return (
     <div className="container-fluid my-3">
+      {loading && (
+        <div className="spinner">
+          <div className="head"></div>
+        </div>
+      )}
       <div className="row">
         <div className="col-md-6">
           <div className="meme-image-container">

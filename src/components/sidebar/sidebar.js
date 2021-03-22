@@ -9,7 +9,6 @@ const Sidebar = ({
   sideData,
   showPopup,
   onClose,
-  title,
   changeTitle,
 }) => {
   const [idx, setIdx] = React.useState(0);
@@ -31,7 +30,15 @@ const Sidebar = ({
       <div className="p-2 sidebar-body h-100">
         {sideData?.map((item, i) => (
           <div key={i} className="my-3 d-flex align-items-center">
-            <h4 className="f1">{item?.title}</h4>
+            <h4
+              style={{
+                color: item.prop.css.font.color,
+                fontSize: `${item.prop.css.font.fontSize}px`,
+              }}
+              className="f1"
+            >
+              {item?.title}
+            </h4>
             <div className="position-relative">
               <Button
                 onClick={() => {
@@ -42,14 +49,37 @@ const Sidebar = ({
                 className="border border-info"
               />
               {popupStatus && idx === i && (
-                <div className="edit-popup position-absolute border border-info">
-                  <input
-                    type="text"
-                    value={item?.title}
-                    onChange={(e) => changeTitle(e, i)}
-                    className="popup-input border-bottom bg-transparent w-100 text-white"
-                  />
-                </div>
+                <>
+                  <div className="edit-popup position-absolute border border-info">
+                    <div className="my-3">
+                      <input
+                        type="text"
+                        name="title"
+                        value={item?.title}
+                        onChange={(e) => changeTitle(e, i)}
+                        className="popup-input border-bottom bg-transparent w-100 text-white"
+                      />
+                    </div>
+                    <div className="my-3">
+                      <input
+                        type="color"
+                        name="prop.css.font.color"
+                        value={item?.prop?.css?.font?.color}
+                        onChange={(e) => changeTitle(e, i)}
+                        className="popup-input border-bottom bg-transparent w-100 text-white"
+                      />
+                    </div>
+                    <div className="my-3">
+                      <input
+                        type="range"
+                        name="prop.css.font.fontSize"
+                        value={item?.prop?.css?.font?.fontSize}
+                        onChange={(e) => changeTitle(e, i)}
+                        className="popup-input border-bottom bg-transparent w-100 text-white"
+                      />
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </div>

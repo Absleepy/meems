@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import axios from "axios";
 
-const Data = () => {
+const useData = () => {
     const [memes, setMemes] = useState([]); 
     const [loading, setLoading] = useState(true);
      
@@ -22,7 +22,7 @@ const Data = () => {
         fetchData();
       }, []);
     
-    return memes 
+    return [memes,loading] 
 }
 
-export default Data
+export default useData
