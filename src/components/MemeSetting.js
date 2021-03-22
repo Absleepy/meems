@@ -1,17 +1,24 @@
 import React from 'react'  
 
- const MemeSetting = ({text, handleChange, handleClick}) => { 
+ const MemeSugguestions = ({memes, changeMeme}) => { 
     
    
   
-    return (
-        <div>
-            <div className="my-2 text-right"><button className="btn myBtn text-white" onClick={handleClick} title="Add Title">Add</button></div>
-           <div className="w-100 mt-1">
-            <input type="text" className="meme-input w-100" maxLength="45" onChange={handleChange} value={text ?? ""} />  
-             
+    return ( 
+          <div className="sugguested-meems">
+            <div className="d-flex align-items-center sug-meens-cont">
+              {memes?.map((meme) => (
+                <div 
+                onClick={() => changeMeme(meme)}
+                  className="sug-box"
+                  key={meme.id.toString()}
+                >
+                  <img src={meme?.url} width="100%" alt="" />
+                </div>
+              ))}
             </div>
-        </div>
+          </div>
+            
     )
 }
-export default MemeSetting;
+export default MemeSugguestions;

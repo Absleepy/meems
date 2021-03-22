@@ -2,23 +2,22 @@ import React from "react";
 import { useCallback, useState } from "react";
 import { useDrop } from "react-dnd";
 import { ItemsTypes } from "./ItemsTypes";
-import MemeImage from "./MemeImage";
+import MemeTitle from "./MemeTitle";
 import update from "immutability-helper";
-export const Container = ({ img, text, moreTitle }) => {
-  const [boxes, setBoxes] = useState({});
-  React.useEffect(() => {
-    const obj = {};
-    moreTitle?.map(
-      (more, i) =>
-        (obj[i] = {
-          left: 43,
-          top: 23,
-          title: more.title,
-        })
-    );
-    setBoxes(obj);
-  }, [moreTitle]);
-
+export const Container = ({title, objects}) => { 
+  const [boxes, setBoxes] = useState({objects});
+  React.useEffect(() =>{
+    const empObj = {};
+    objects?.map((obj, i) =>(
+      empObj[i] = {
+        top: obj?.top,
+        left: obj?.left,
+        title: obj?.title
+      }
+    )) 
+    setBoxes(empObj)
+  },[objects]) 
+   
   const moveBox = useCallback(
     (id, left, top) => {
       setBoxes(
@@ -47,21 +46,16 @@ export const Container = ({ img, text, moreTitle }) => {
   return (
     <div
       ref={drop}
-      style={{
-        position: "relative",
-        backgroundImage: `url(${img})`,
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        height: "100%",
-      }}
+       className="h-100"
     >
       {Object.keys(boxes).map((key) => {
         const { left, top } = boxes[key];
         return (
-          <MemeImage key={key} id={key} left={left} top={top}>
-            <h2 className="meme_img_text">{text}</h2>
-          </MemeImage>
+          <MemeTitle key={key} id={key} left={left} top={top}>
+             <h4 key={key} className="meme_img_text">{
+               Object.values(boxes).map(ob => <span>{ob?.title}</span>)
+             }</h4>
+          </MemeTitle>
         );
       })}
     </div>

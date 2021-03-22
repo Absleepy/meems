@@ -1,7 +1,7 @@
 import React from "react";
 import { useDrag } from "react-dnd";
 import { ItemsTypes } from "./ItemsTypes";
-const MemeImage = ({ id, left, top, children }) => {
+const MemeTitle = ({ id, left, top, children }) => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: ItemsTypes.BOX,
@@ -18,7 +18,7 @@ const MemeImage = ({ id, left, top, children }) => {
   return (
     <div
       ref={drag}
-      role="Box"
+      role="BOX"
       className="overflow-hidden d-flex align-items-center justify-content-around flex-column"
       style={{ position: "absolute", cursor: "grab", left, top }}
     >
@@ -26,4 +26,4 @@ const MemeImage = ({ id, left, top, children }) => {
     </div>
   );
 };
-export default MemeImage;
+export default MemeTitle;

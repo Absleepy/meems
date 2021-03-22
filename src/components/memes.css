@@ -1,8 +1,25 @@
 :root {
   --primary: #050115;
+  --error-color: #0dcaf0;
 }
-
-.meme-image {
+.error {
+  color: var(--error-color);
+}
+body {
+  background-color: var(--primary);
+  color: #fff;
+  font-family: cursive;
+}
+.f1 {
+  flex: 1;
+}
+h4 {
+  word-break: break-all;
+}
+.c-pointer {
+  cursor: pointer;
+}
+.meme-image-container {
   height: 400px;
   object-fit: contain;
   border: 1px solid #a80000;
@@ -15,7 +32,7 @@
 
 .sug-meens-cont::-webkit-scrollbar {
   width: 10px;
-  height: 15px;
+  height: 8px;
 }
 
 /* Track */
@@ -49,12 +66,11 @@
   transform: scale(1.1);
 }
 
-.meme-input {
+.popup-input {
   margin: 6px 0;
-  border: none;
-  border-bottom: 1px solid #000;
+  font-size: 1.4rem;
 }
-.meme-input:focus {
+.popup-input:focus {
   outline: none;
 }
 .addTitle {
@@ -109,15 +125,17 @@
 }
 
 /* button */
-.myBtn {
-  background-color: var(--primary);
-}
 .btn-container button {
   margin-left: auto;
+}
+.myBtn {
+  background-color: var(--primary);
 }
 
 /* sidebar */
 .sidebar {
+  border: 1px solid var(--error-color);
+  box-shadow: 0 0 12px #78777c;
   width: 100%;
   position: fixed;
   color: #fff;
@@ -132,22 +150,19 @@
   transform: none;
 }
 .sidebar-header {
-  border-bottom: 1px solid #848484;
+  border-bottom: 1px solid #0dcaf0;
 }
 .closeBtn {
-  width: 36px;
-  height: 36px;
+  width: 20px;
+  height: 20px;
   display: block;
   stroke-width: 4;
-  stroke: #fff;
+  stroke: #ff7676;
   stroke-miterlimit: 10;
   margin: 10% auto;
   transition: stroke 0.3s ease-in;
   box-shadow: inset 0px 0px 0px #7ac142;
   cursor: pointer;
-}
-.closeBtn:hover {
-  stroke: #ff7676;
 }
 
 /* color picker */
@@ -158,6 +173,7 @@
   border: none;
   width: 100px;
   height: 20px;
+  border: 1px solid rgb(92 86 116);
 }
 
 #colorPicker::-webkit-color-swatch {
@@ -170,8 +186,9 @@
 }
 
 .edit-popup {
-  height: 200px;
-  width: 250px;
+  height: auto;
+  min-height: 200px;
+  width: 300px;
   right: 100%;
   background-color: #292341;
   padding: 6px;
