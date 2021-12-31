@@ -1,22 +1,35 @@
-import React from 'react'
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { Container } from "../Container";
-import { DndProvider } from "react-dnd"; 
-const MemeImage = ({img, objects, title}) => { 
-     
-    return ( 
-       <div className="meme-image" style={{
+import React from "react";
+import DragableCard from "./DragableCard";
+
+const MemeImage = ({ img, boxes, drop, hideSourceOnDrag }) => {
+  return (
+    <div
+      className="meme-image"
+      style={{
         backgroundImage: `url(${img})`,
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         height: "100%",
-       }}>
-           <DndProvider backend={HTML5Backend}>
-            <Container objects={objects} title={title}/>
-            </DndProvider>
-       </div>
-    )
-}
+      }}
+      ref={drop}
+    >
+      {Object.keys(boxes).map((key, index) => {
+        const { left, top } = boxes[key];
+        return (
+          <DragableCard
+            key={key}
+            index={index}
+            id={key}
+            left={left}
+            top={top}
+            hideSourceOnDrag={hideSourceOnDrag}
+            text={boxes}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
-export default MemeImage
+export default MemeImage;

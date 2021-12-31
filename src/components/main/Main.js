@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import MemeImage from "./MemeImage";
 import useData from "./useData";
 import MemeSugguestions from "../MemeSetting";
 import Button from "../button/Button";
+import { useDrop } from "react-dnd";
 import Sidebar from "../sidebar/sidebar";
+import update from "immutability-helper";
 const Main = () => {
   const [memes, loading] = useData();
   const [randomObj, setRandomObj] = useState({});
-  const [objects, setObjects] = useState([]);
   const [sidebarStatus, setSidebarStatus] = useState(false);
   const [error, setError] = useState(false);
   const [popupStatus, setPopupStatus] = useState(false);
+  const [addMoreTitles, setAddMoreTitles] = useState(true);
+  const [lastObjectKey, setLastObjectKey] = useState(2);
   const changeMeme = (meme) => {
     setRandomObj(meme);
   };
@@ -20,90 +23,77 @@ const Main = () => {
     setRandomObj(memes[Math.floor(Math.random() * memes.length)]);
   }, [memes]);
 
-  const randomNumber = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  };
+  // main image
+  const [boxes, setBoxes] = useState({
+    1: { top: 20, left: 80, title: "title 1" },
+  });
 
-  // add title
-  const addTitle = () => {
-    setError(false);
-    if (objects.length > randomObj?.box_count - 1) {
-      return;
-    }
-    setObjects([
-      ...objects,
-      {
-        top: randomNumber(10, 100),
-        left: randomNumber(10, 100),
-        title: randomObj?.name,
-        prop: {
-          css: { color: "#ffffff", fontSize: "18" },
-        },
+  const moveBox = useCallback(
+    (id, left, top) => {
+      setBoxes(
+        update(boxes, {
+          [id]: {
+            $merge: { left, top },
+          },
+        })
+      );
+    },
+    [boxes, setBoxes]
+  );
+  const [, drop] = useDrop(
+    () => ({
+      accept: "BOX",
+      drop(item, monitor) {
+        const delta = monitor.getDifferenceFromInitialOffset();
+        const left = Math.round(item.left + delta.x);
+        const top = Math.round(item.top + delta.y);
+        moveBox(item.id, left, top);
+        return undefined;
       },
-    ]);
-  };
-
+    }),
+    [moveBox]
+  );
   // sidebar
   const toggleSidebar = () => {
-    !objects.length ? setError(true) : setSidebarStatus(!sidebarStatus);
+    setSidebarStatus(!sidebarStatus);
   };
   const showPopup = () => {
     setPopupStatus(!popupStatus);
   };
 
-  const changeTitle = (e, i) => {
-    //i => index of array need to updated
-    let { name: key, value } = e.target;
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+  }
 
-    if (key.includes(".")) {
-      key = key.split(".");
+  const handleAddTitle = () => {
+    if (addMoreTitles) {
+      setLastObjectKey((x) => (x = x += 1));
+
+      setBoxes({
+        ...boxes,
+        [lastObjectKey]: {
+          top: getRandomInt(2, 200),
+          left: getRandomInt(1, 398),
+          title: `title ${lastObjectKey}`,
+        },
+      });
     }
-    console.log(key);
-
-    // key = "title" value="whatever user in typing"
-
-    // updating use map
-    if (typeof key === "string")
-      setObjects(
-        objects.map((obj, index) =>
-          index === i ? { ...obj, [key]: value } : obj
-        )
-      );
-    else
-      setObjects(
-        objects.map((obj, index) => {
-          if (index === i) {
-            const data = { ...obj };
-            const traverse = (data, i) => {
-              Object.keys(data).map((k) => {
-                if (k === key[i]) {
-                  if (i === key.length - 1) {
-                    data[k] = value;
-                  } else traverse(data[k], i + 1);
-                }
-              });
-            };
-            traverse(data, 0);
-
-            return { ...data };
-          } else return obj;
-        })
-      );
-
-    //test = [{title:"something 1"},{title:"something 2"},{title:"something 3"}]
-    //for example i=2
-    //updating direct
-
-    // test[i] = {title:"something new"}
-    //const key = "title"
-    // console.log(test[i][key])
-
-    // let newObjects = [...objects];
-    // newObjects[i] = { ...newObjects[i], [key]: value };
-    // setObjects(newObjects);
+  };
+  const changeTitle = (e, keyToChange, index) => {
+    const { value } = e.target;
+    setBoxes({
+      ...boxes,
+      [index + 1]: { ...boxes[index + 1], [keyToChange]: value },
+    });
   };
 
-  console.log(objects);
+  // effects
+  useEffect(() => {
+    lastObjectKey > 5 && setAddMoreTitles(false);
+  }, [lastObjectKey]);
+
   return (
     <div className="container-fluid my-3">
       {loading && (
@@ -114,15 +104,15 @@ const Main = () => {
       <div className="row">
         <div className="col-md-6">
           <div className="meme-image-container">
-            <MemeImage objects={objects} img={randomObj?.url} />
+            <MemeImage drop={drop} img={randomObj?.url} boxes={boxes} />
           </div>
         </div>
         <div className="col-md-6">
           <MemeSugguestions changeMeme={changeMeme} memes={memes} />
           <Button
+            onClick={handleAddTitle}
             className="border border-info"
             text="Add Title"
-            onClick={addTitle}
           />
           {error && (
             <div className="text-right">
@@ -141,12 +131,12 @@ const Main = () => {
 
       {/* sidebar */}
       <Sidebar
+        changeTitle={changeTitle}
         showSidebar={sidebarStatus}
+        sideData={boxes}
         onClose={toggleSidebar}
-        sideData={objects}
         title={randomObj?.name}
         showPopup={showPopup}
-        changeTitle={changeTitle}
         popupStatus={popupStatus}
       />
     </div>

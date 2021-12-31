@@ -28,12 +28,12 @@ const Sidebar = ({
         </div>
       </div>
       <div className="p-2 sidebar-body h-100">
-        {sideData?.map((item, i) => (
+        {Object.values(sideData)?.map((item, i) => (
           <div key={i} className="my-3 d-flex align-items-center">
             <h4
               style={{
-                color: item.prop.css.font.color,
-                fontSize: `${item.prop.css.font.fontSize}px`,
+                color: item?.fontStyle?.color,
+                fontSize: `${item?.fontStyle?.fontSize}px`,
               }}
               className="f1"
             >
@@ -56,7 +56,7 @@ const Sidebar = ({
                         type="text"
                         name="title"
                         value={item?.title}
-                        onChange={(e) => changeTitle(e, i)}
+                        onChange={(e) => changeTitle(e, "title", i)}
                         className="popup-input border-bottom bg-transparent w-100 text-white"
                       />
                     </div>
@@ -64,8 +64,8 @@ const Sidebar = ({
                       <input
                         type="color"
                         name="prop.css.font.color"
-                        value={item?.prop?.css?.font?.color}
-                        onChange={(e) => changeTitle(e, i)}
+                        value={item?.color}
+                        onChange={(e) => changeTitle(e, "color", i)}
                         className="popup-input border-bottom bg-transparent w-100 text-white"
                       />
                     </div>
@@ -73,8 +73,8 @@ const Sidebar = ({
                       <input
                         type="range"
                         name="prop.css.font.fontSize"
-                        value={item?.prop?.css?.font?.fontSize}
-                        onChange={(e) => changeTitle(e, i)}
+                        value={item?.fontSize}
+                        onChange={(e) => changeTitle(e, "fontSize", i)}
                         className="popup-input border-bottom bg-transparent w-100 text-white"
                       />
                     </div>
