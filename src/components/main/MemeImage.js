@@ -1,7 +1,7 @@
 import React from "react";
 import DragableCard from "./DragableCard";
 
-const MemeImage = ({ img, boxes, drop, hideSourceOnDrag }) => {
+const MemeImage = ({ img, boxes, drop, handleRemoveTitle }) => {
   return (
     <div
       className="meme-image"
@@ -22,9 +22,9 @@ const MemeImage = ({ img, boxes, drop, hideSourceOnDrag }) => {
             index={index}
             id={key}
             left={left}
-            top={top}
-            hideSourceOnDrag={hideSourceOnDrag}
+            top={top} 
             text={boxes}
+            handleRemoveTitle={handleRemoveTitle}
           />
         );
       })}

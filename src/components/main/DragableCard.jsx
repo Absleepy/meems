@@ -7,7 +7,7 @@ const style = {
   cursor: "move",
   color: "black",
 };
-export default function DragableCard({ id, left, key, top, text, index }) {
+export default function DragableCard({ id, left, key, top, text, index, handleRemoveTitle }) {
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "BOX",
@@ -23,14 +23,19 @@ export default function DragableCard({ id, left, key, top, text, index }) {
   }
 
   return (
-    <div ref={drag} key={key} style={{ ...style, left, top }} role="Box">
+    <div className="memeTitle" ref={drag} key={key} style={{ ...style, left, top }} role="Box">
       <div
         style={{
           color: text[index + 1]?.color,
           fontSize: `${text[index + 1]?.fontSize}px`,
+          position: 'relative'
         }}
+        
       >
-        {text[index + 1].title}
+        {text[index + 1]?.title}
+        <button onClick={() => handleRemoveTitle(index)} className="removeBtn">
+          &times;
+        </button>
       </div>
     </div>
   );

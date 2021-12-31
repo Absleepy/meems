@@ -84,7 +84,19 @@ h4 {
   font-weight: bold;
   background: var(--primary);
 }
+.removeBtn{
+  border: none;
+    background-color: transparent;
+    position: absolute;
+    top: -25px;
+    right: -16px;
+    font-size: 1.6rem;
+    opacity: 0;
 
+  }
+.memeTitle:hover .removeBtn{
+  opacity: 1;
+}
 /* loading */
 .spinner {
   width: 10em;

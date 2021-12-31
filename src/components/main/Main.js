@@ -89,11 +89,16 @@ const Main = () => {
     });
   };
 
+  const handleRemoveTitle = index => {
+
+    const objs = { ...boxes }
+    delete objs[index + 1];
+    setBoxes({ ...objs })
+  }
   // effects
   useEffect(() => {
     lastObjectKey > 5 && setAddMoreTitles(false);
-  }, [lastObjectKey]);
-
+  }, [lastObjectKey]); 
   return (
     <div className="container-fluid my-3">
       {loading && (
@@ -104,7 +109,7 @@ const Main = () => {
       <div className="row">
         <div className="col-md-6">
           <div className="meme-image-container">
-            <MemeImage drop={drop} img={randomObj?.url} boxes={boxes} />
+            <MemeImage handleRemoveTitle={handleRemoveTitle} drop={drop} img={randomObj?.url} boxes={boxes} />
           </div>
         </div>
         <div className="col-md-6">
